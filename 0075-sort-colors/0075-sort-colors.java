@@ -11,6 +11,7 @@ class Solution {
             switch(nums[mid])
             {
                 case 0:{
+    //low k sath swap krne time mid aur low dono ko aage badhanaa hai
                     temp=nums[low];
                     nums[low]=nums[mid];
                     nums[mid]=temp;
@@ -25,10 +26,12 @@ class Solution {
                     
                 case 2:
                     {
+        //high k sath swap krne time sirf high  ko aage badhanaa hai
                         temp=nums[high];
                         nums[high]=nums[mid];
                         nums[mid]=temp;
                         high--;
+                        
                         break;
                     }
             }
