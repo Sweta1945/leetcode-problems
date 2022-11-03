@@ -1,51 +1,57 @@
-// All the "O" that are not directly/indirectly connected to the "O" on the boundary line, will be captured and converted into "X"
-
-// Just traverse the matrix once, and as soon as your enounter a boundary line that has a "O" in it, run DFS on this "O" and "Save" all the nehgbours of this "O" from being captured by calling them "S"
-
-// Now traverse the matrix again and capture all the "O" that you can inside the matrix except the boundary line
-
-// Rename the "Save" O back to "O"
-// Done!
 class Solution {
     public void solve(char[][] board) {
-        int m = board.length;
-        int n = board[0].length;
         
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (i == 0 || i == m - 1 || j == 0 || j == n - 1 && board[i][j] == 'O') {
-                    flip(board, i, j);
+        int[][] vis=new int[board.length][board[0].length];
+        
+        for(int i=0; i<board.length; i++)
+        {
+            for(int j=0; j<board[0].length; j++)
+            {
+                if(i==0 || j==0|| i==board.length-1 || j==board[0].length-1)
+                {
+                    if(board[i][j]=='O')
+                    {
+                        dfs(i,j,vis,board);
+                    vis[i][j]=1;
+                    }
+                    
                 }
             }
         }
+    
+       // return board;
         
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (board[i][j] == 'O') {
-                    board[i][j] = 'X';
+        for(int i=0; i<board.length; i++)
+        {
+            for(int j=0; j<board[0].length; j++)
+            {
+                if(vis[i][j]!=1)
+                {
+                    board[i][j]='X';
                 }
-                else if (board[i][j] == 'S') {
-                    board[i][j] = 'O';
+                else
+                {
+                    board[i][j]='O';
                 }
             }
         }
     }
     
-    private void flip(char[][] board, int i, int j) {
-        int m = board.length;
-        int n = board[0].length;
-        int[][] direction={{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-        if (i < 0 || i >= m || j < 0 || j >= n) {
-            return;
+    public void dfs(int i, int j, int[][]vis, char[][]board)
+    {
+        int[][] directions={{-1,0},{1,0},{0,1},{0,-1}};
+        vis[i][j]=1;
+        for(int[]dir: directions)
+        {
+            int x=i+dir[0];
+            int y=j+dir[1];
+            if(x>=0 && y>=0 && x<board.length && y<board[0].length && vis[x][y]!=1 && board[x][y]=='O')
+            {
+                dfs(x, y, vis, board);
+                vis[x][y]=1;
+                
+                
+            }
         }
-        
-        if (board[i][j] == 'O') {
-            board[i][j] = 'S';
-            
-           for(int[] dir: direction)
-           {
-               flip(board, i+dir[0], j+dir[1] );
-           }
-        }        
     }
 }
